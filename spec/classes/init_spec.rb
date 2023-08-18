@@ -7,13 +7,15 @@ describe 'rkhunter', type: :class do
 
       it { is_expected.to contain_class('rkhunter::packages') }
       it { is_expected.to contain_class('rkhunter::params') }
+
       it do
         is_expected.to contain_file('/etc/rkhunter.conf').with(
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0644'
+          'owner' => 'root',
+          'group' => 'root',
+          'mode' => '0644'
         )
       end
+
       it { is_expected.to contain_file('/usr/local/bin/rktask') }
       it { is_expected.to contain_file('/var/lib/rkhunter/db/mirrors.dat') }
       it { is_expected.to contain_package('rkhunter').with('ensure' => 'installed') }
@@ -27,6 +29,7 @@ describe 'rkhunter', type: :class do
           it { is_expected.to contain_file('/etc/rkhunter.conf').with_content(%r{^SUSPSCAN_MAXSIZE=10240000}) }
           it { is_expected.to contain_file('/etc/rkhunter.conf').with_content(%r{^SUSPSCAN_THRESH=200}) }
           it { is_expected.to contain_file('/etc/rkhunter.conf').with_content(%r{^LOCK_TIMEOUT=300}) }
+
           if facts[:os]['family'] == 'RedHat'
             it { is_expected.to contain_file('/etc/rkhunter.conf').without_content(%r{^DISABLE_UNHIDE}) }
           else
@@ -91,6 +94,7 @@ describe 'rkhunter', type: :class do
             is_expected.to contain_file('/etc/rkhunter.conf').without_content(%r{^LANGUAGE})
           end
         end
+
         context 'when set' do
           let(:params) { { language: 'de' } }
 
